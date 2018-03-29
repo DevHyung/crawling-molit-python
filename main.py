@@ -38,8 +38,8 @@ DanjiDatas = {
 'menuGubun': 'A',
 'srhType': 'TOT',
 'houseType': '1',
-'srhYear': '2018',
-'srhPeriod': '1',
+'srhYear': srhYear,
+'srhPeriod': srhPeriod,
 'gubunCode': 'LAND',
 'sidoCode': '',
 'gugunCode': '',
@@ -68,8 +68,8 @@ ListDatas = {
 'menuGubun': 'A',
 'srhType': 'LOC',
 'houseType': '1',
-'srhYear': '2018',
-'srhPeriod': '1',
+'srhYear': srhYear,
+'srhPeriod': srhPeriod,
 'gubunCode': 'LAND',
 'sidoCode': '',
 'gugunCode': '',
@@ -92,6 +92,10 @@ ListDatas = {
 'typeGbn':'',
 }
 if __name__ == "__main__":
+    # 앞으로 할일은
+    # 년도, 분기, 도로명이나 주소같은거 같이저장되고
+    # 서울시 강남구 .. 이런거 다 저장되게끔
+    # 레츠기릿
     jsonlists = json.loads(open('tmp.txt','r',encoding='utf8').read())
     for j in jsonlists['jsonList']:
         NM = j['BLDG_NM']
