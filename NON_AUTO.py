@@ -13,8 +13,8 @@ srhYear = 2018
 srhPeriod = 1
 conn = pymysql.connect(host=DB_HOST, user=DB_ID,  passwd=DB_PW,db= DB_NAME, charset="utf8")
 curs = conn.cursor()
-sql_apart = """INSERT INTO molit.apart(BLDG_NM,BORN,DEAL_MM,DEAL_DD,BLDG_AREA,APTNO,BLDG_CD,BUILD_YEAR,SUM_AMT)
-VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
+sql_apart = """INSERT INTO molit.apart(SRH_YEAR,SRH_PEROID,SIDO,GUGUN,DONG,BLDG_NM,BORN,DEAL_MM,DEAL_DD,BLDG_AREA,APTNO,BLDG_CD,BUILD_YEAR,SUM_AMT)
+VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
 datas = {
 'menuGubun': 'A',
 'srhType': 'TOT',
@@ -92,47 +92,7 @@ ListDatas = {
 'typeGbn':'',
 }
 if __name__ == "__main__":
-    # 앞으로 할일은
-    # 년도, 분기, 도로명이나 주소같은거 같이저장되고
-    # 서울시 강남구 .. 이런거 다 저장되게끔
-    # 레츠기릿
-    jsonlists = json.loads(open('tmp.txt','r',encoding='utf8').read())
-    for j in jsonlists['jsonList']:
-        NM = j['BLDG_NM']
-        BOBN = j['BOBN']
-        for M1 in j['month1List']:
-            MM = M1['DEAL_MM']
-            DD = M1['DEAL_DD']
-            AREA = M1['BLDG_AREA']
-            APTNO = M1['APTFNO']
-            CD = M1['BLDG_CD']
-            YEAR = M1['BUILD_YEAR']
-            SUMAMT = M1['SUM_AMT']
-            curs.execute(sql_apart, (NM,BOBN,MM,DD,AREA,APTNO,CD,YEAR,SUMAMT))
-            conn.commit()
-        for M2 in j['month2List']:
-            MM = M2['DEAL_MM']
-            DD = M2['DEAL_DD']
-            AREA = M2['BLDG_AREA']
-            APTNO = M2['APTFNO']
-            CD = M2['BLDG_CD']
-            YEAR = M2['BUILD_YEAR']
-            SUMAMT = M2['SUM_AMT']
-            curs.execute(sql_apart, (NM,BOBN,MM,DD,AREA,APTNO,CD,YEAR,SUMAMT))
-            conn.commit()
-        for M3 in j['month3List']:
-            MM = M3['DEAL_MM']
-            DD = M3['DEAL_DD']
-            AREA = M3['BLDG_AREA']
-            APTNO = M3['APTFNO']
-            CD = M3['BLDG_CD']
-            YEAR = M3['BUILD_YEAR']
-            SUMAMT = M3['SUM_AMT']
-            curs.execute(sql_apart, (NM,BOBN,MM,DD,AREA,APTNO,CD,YEAR,SUMAMT))
-            conn.commit()
-    #for jsonlist in jsonString['jsonList']:
-    exit(-1)
-    print(">>> 프로그램시작")
+
 
     # 시도 리스트 받아오기 및 입력
     print(">>> 시도 리스트 받아오는중....")
@@ -189,6 +149,7 @@ if __name__ == "__main__":
     html = requests.post('http://rt.molit.go.kr/srh/getDanjiComboAjax.do', data=DanjiDatas)
     Danjijson = json.loads(html.text)
     print('\t\t\t>>> 전체:0')
+    danjiDict['전체'] = ''
     for jsonlist in Danjijson['jsonList']:
         print('\t\t\t>>>' + jsonlist['NAME']+":"+str(jsonlist['CODE']))
         danjiDict[jsonlist['NAME']] = jsonlist['CODE']
@@ -202,10 +163,40 @@ if __name__ == "__main__":
 
     # 데이터파싱
     html = requests.post('http://rt.molit.go.kr/srh/getListAjax.do', data=ListDatas, headers=headers)
-    Listjson = json.loads(html.text)
-    print(Listjson)
-    exit(-1)
-
+    jsonlists = json.loads(html.text)
+    for j in jsonlists['jsonList']:
+        NM = j['BLDG_NM']
+        BOBN = j['BOBN']
+        for M1 in j['month1List']:
+            MM = M1['DEAL_MM']
+            DD = M1['DEAL_DD']
+            AREA = M1['BLDG_AREA']
+            APTNO = M1['APTFNO']
+            CD = M1['BLDG_CD']
+            YEAR = M1['BUILD_YEAR']
+            SUMAMT = M1['SUM_AMT']
+            curs.execute(sql_apart, (str(srhYear),str(srhPeriod),sido,gugun,dong,NM, BOBN, MM, DD, AREA, APTNO, CD, YEAR, SUMAMT))
+            conn.commit()
+        for M2 in j['month2List']:
+            MM = M2['DEAL_MM']
+            DD = M2['DEAL_DD']
+            AREA = M2['BLDG_AREA']
+            APTNO = M2['APTFNO']
+            CD = M2['BLDG_CD']
+            YEAR = M2['BUILD_YEAR']
+            SUMAMT = M2['SUM_AMT']
+            curs.execute(sql_apart, (str(srhYear),str(srhPeriod),sido,gugun,dong,NM, BOBN, MM, DD, AREA, APTNO, CD, YEAR, SUMAMT))
+            conn.commit()
+        for M3 in j['month3List']:
+            MM = M3['DEAL_MM']
+            DD = M3['DEAL_DD']
+            AREA = M3['BLDG_AREA']
+            APTNO = M3['APTFNO']
+            CD = M3['BLDG_CD']
+            YEAR = M3['BUILD_YEAR']
+            SUMAMT = M3['SUM_AMT']
+            curs.execute(sql_apart, (str(srhYear),str(srhPeriod),sido,gugun,dong,NM, BOBN, MM, DD, AREA, APTNO, CD, YEAR, SUMAMT))
+            conn.commit()
 
     """
     for sido in sidoOption.find_all('option')[1:]:
