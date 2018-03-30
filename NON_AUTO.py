@@ -196,23 +196,3 @@ if __name__ == "__main__":
             YEAR = M3['BUILD_YEAR']
             SUMAMT = M3['SUM_AMT']
             curs.execute(sql_apart, (str(srhYear),str(srhPeriod),sido,gugun,dong,NM, BOBN, MM, DD, AREA, APTNO, CD, YEAR, SUMAMT))
-            conn.commit()
-
-    """
-    for sido in sidoOption.find_all('option')[1:]:
-        # 시:코드 가지고 구/군을 구함
-        print(">>>"+sido.get_text()+":"+sido['value'])
-        datas['sidoCode'] = sido['value']
-        html = requests.post('http://rt.molit.go.kr/srh/getGugunListAjax.do',data=datas)
-        jsonString = json.loads(html.text)
-        for jsonlist in jsonString['jsonList']:
-            print('\t>>>'+jsonlist['NAME']+":"+jsonlist['CODE'])
-            DongDatas['gugunCode'] = jsonlist['CODE']
-            html = requests.post('http://rt.molit.go.kr/srh/getDongListAjax.do', data=DongDatas)
-            Dongjson = json.loads(html.text)
-            for jsonlist in Dongjson['jsonList']:
-                print('\t\t>>>' + jsonlist['NAME'] + ":" + jsonlist['CODE'])
-            break
-        break
-        # 구군:코드 를 가지고 읍면동코드를 구함
-    """
