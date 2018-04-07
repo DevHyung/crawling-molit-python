@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 from JSON_DATA import *
 from DB_CONFIG import *
-#### 전역 변수 설정구간
+
 def Parsing():
     for ParseStr in ParseList:
         print(srhYear,'-',srhPeriod,'분기',ParseStr, '추출중 ...')
