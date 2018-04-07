@@ -12,7 +12,7 @@ if __name__ == "__main__":
     ParseList = []
     for line in f:
         ParseList.append(line.strip())
-
+    exit(-1)
     for ParseStr in ParseList:
         print(ParseStr , '추출중 ...')
         sido,gugun,dong,danji = ParseStr.split('_')
