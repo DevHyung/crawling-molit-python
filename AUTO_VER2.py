@@ -1,12 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from JSON_DATA import *
 from DB_CONFIG import *
+from JSON_DATA import *
 
 def Parsing():
     for ParseStr in ParseList:
         print(srhYear,'-',srhPeriod,'분기',ParseStr, '추출중 ...')
+        ListDatas['srhYear'] = srhYear
+        ListDatas['srhPeriod'] = srhPeriod
         sido, gugun, dong, danji = ParseStr.split('_')
         try:
             html = requests.get('http://rt.molit.go.kr/idx/main.do')
@@ -96,6 +98,7 @@ def Parsing():
             print(">>> 자료없음 또는 IP벤가능성있음, 너무 자주 출력시 확인필요")
 
 if __name__ == "__main__":
+
     # NON_AUTO 버전과 다르게 파일에서 가져옴
     # 서울특별시_강남구_개포동_전체 이런식의 포맷으로 되어있으면 파싱을해서 NON_AUTO버전의 입력을 대체하면됌
     f = open("ParseList_VER2.txt").readlines()
