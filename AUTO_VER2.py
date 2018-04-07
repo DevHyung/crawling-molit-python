@@ -10,8 +10,32 @@ if __name__ == "__main__":
     # 서울특별시_강남구_개포동_전체 이런식의 포맷으로 되어있으면 파싱을해서 NON_AUTO버전의 입력을 대체하면됌
     f = open("ParseList_VER2.txt").readlines()
     ParseList = []
-    for line in f:
-        ParseList.append(line.strip())
+    LoopIdxList = []
+    for idx in range(len(f)):
+        if f[idx].strip() == '[LOOP]':
+            LoopIdxList.append(idx)
+    print(LoopIdxList)
+    for loopidx in LoopIdxList:
+        dateStr = f[loopidx+1]
+        startDate, endDate = dateStr.split('~')
+        sYear, sPeriod = startDate.split('.')
+        eYear, ePeriod = endDate.split('.')
+        for year in range(int(sYear),int(eYear)+1):
+            if year == int(sYear):# 시작년이 같을때
+                if sYear == eYear: # 시작, 끝 년월 같으면
+                    for period in range(int(sPeriod), int(ePeriod)+1):
+                        print(year, "-", period)
+                else:
+                    for period in range(int(sPeriod),5):
+                        print(year,"-",period)
+            else:# 시작년이 달라질때
+                if year == int(eYear): # 지금년월 끝월 같으면
+                    for period in range(1, int(ePeriod)+1):
+                        print(year, "-", period)
+                else:
+                    for period in range(1,5):
+                        print(year,"-",period)
+
     exit(-1)
     for ParseStr in ParseList:
         print(ParseStr , '추출중 ...')
